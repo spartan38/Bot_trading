@@ -1,0 +1,7 @@
+python-binance
+pyyaml==6.0.1
+fastapi==0.109.2
+uvicorn[standard]
+krakenex
+pymongo
+talib
