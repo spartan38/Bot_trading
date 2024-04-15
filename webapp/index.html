@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- ag-Grid CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community@31.0.1/styles/ag-grid.css" />
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community@31.0.1/styles/ag-theme-alpine.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <title>Porfolio</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script>
+    var appLocation = './';
+    var boilerplatePath = '';
+    var systemJsMap = {
+        "@ag-grid-community/react": "https://cdn.jsdelivr.net/npm/@ag-grid-community/react@31.0.1/",
+        "@ag-grid-community/styles": "https://cdn.jsdelivr.net/npm/@ag-grid-community/styles@31.0.1",
+        "ag-grid-community": "https://cdn.jsdelivr.net/npm/ag-grid-community@31.0.1",
+        "ag-grid-enterprise": "https://cdn.jsdelivr.net/npm/ag-grid-enterprise@31.0.1/",
+        "ag-grid-react": "https://cdn.jsdelivr.net/npm/ag-grid-react@31.0.1/"
+    };
+    var systemJsPaths = {
+        "@ag-grid-community/client-side-row-model": "https://cdn.jsdelivr.net/npm/@ag-grid-community/client-side-row-model@31.0.1/dist/client-side-row-model.cjs.min.js",
+        "@ag-grid-community/core": "https://cdn.jsdelivr.net/npm/@ag-grid-community/core@31.0.1/dist/core.cjs.min.js",
+        "@ag-grid-community/csv-export": "https://cdn.jsdelivr.net/npm/@ag-grid-community/csv-export@31.0.1/dist/csv-export.cjs.min.js",
+        "@ag-grid-community/infinite-row-model": "https://cdn.jsdelivr.net/npm/@ag-grid-community/infinite-row-model@31.0.1/dist/infinite-row-model.cjs.min.js",
+        "@ag-grid-enterprise/advanced-filter": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/advanced-filter@31.0.1/dist/advanced-filter.cjs.min.js",
+        "@ag-grid-enterprise/charts": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/charts@31.0.1/dist/charts.cjs.min.js",
+        "@ag-grid-enterprise/clipboard": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/clipboard@31.0.1/dist/clipboard.cjs.min.js",
+        "@ag-grid-enterprise/column-tool-panel": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/column-tool-panel@31.0.1/dist/column-tool-panel.cjs.min.js",
+        "@ag-grid-enterprise/core": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/core@31.0.1/dist/core.cjs.min.js",
+        "@ag-grid-enterprise/excel-export": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/excel-export@31.0.1/dist/excel-export.cjs.min.js",
+        "@ag-grid-enterprise/filter-tool-panel": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/filter-tool-panel@31.0.1/dist/filter-tool-panel.cjs.min.js",
+        "@ag-grid-enterprise/master-detail": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/master-detail@31.0.1/dist/master-detail.cjs.min.js",
+        "@ag-grid-enterprise/menu": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/menu@31.0.1/dist/menu.cjs.min.js",
+        "@ag-grid-enterprise/multi-filter": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/multi-filter@31.0.1/dist/multi-filter.cjs.min.js",
+        "@ag-grid-enterprise/range-selection": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/range-selection@31.0.1/dist/range-selection.cjs.min.js",
+        "@ag-grid-enterprise/rich-select": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/rich-select@31.0.1/dist/rich-select.cjs.min.js",
+        "@ag-grid-enterprise/row-grouping": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/row-grouping@31.0.1/dist/row-grouping.cjs.min.js",
+        "@ag-grid-enterprise/server-side-row-model": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/server-side-row-model@31.0.1/dist/server-side-row-model.cjs.min.js",
+        "@ag-grid-enterprise/set-filter": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/set-filter@31.0.1/dist/set-filter.cjs.min.js",
+        "@ag-grid-enterprise/side-bar": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/side-bar@31.0.1/dist/side-bar.cjs.min.js",
+        "@ag-grid-enterprise/sparklines": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/sparklines@31.0.1/dist/sparklines.cjs.min.js",
+        "@ag-grid-enterprise/status-bar": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/status-bar@31.0.1/dist/status-bar.cjs.min.js",
+        "@ag-grid-enterprise/viewport-row-model": "https://cdn.jsdelivr.net/npm/@ag-grid-enterprise/viewport-row-model@31.0.1/dist/viewport-row-model.cjs.min.js",
+        "ag-charts-community": "https://cdn.jsdelivr.net/npm/ag-charts-community/"
+    };
+</script>
+</body>
+
+</html>

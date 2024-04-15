@@ -1,7 +1,9 @@
+from typing import Dict, List, Any
+
 from common.exchange.exchange_factory import exchange_factory
 
 
-def get_portfolio(exchanges: str = ["binance", "kraken"]):
+def get_portfolio(exchanges: List[str] = ["binance", "kraken"]) -> List[Dict[str, Any]]:
     my_portfolio = []
     for exchange in exchanges:
         exchange_object = exchange_factory(exchange)

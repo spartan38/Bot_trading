@@ -3,6 +3,7 @@ from datetime import datetime
 from settings import MONGODB_URI
 from database.database import Database
 
+
 class PortfolioDB(Database):
     def __init__(self, collection_name):
         super().__init__(collection_name=collection_name)
