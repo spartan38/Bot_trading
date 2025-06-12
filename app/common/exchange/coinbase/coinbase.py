@@ -120,13 +120,15 @@ class Coinbase:
             logger.error(f"Error executing order for {pair}: {e}")
             return {'error': str(e)}
 
-    def get_ticker_data(self, symbol: str, time_basis: str = '60', start: str = "", end: str = "") -> List[Dict[str, any]]:
+    def get_ticker_data(self, symbol: str, time_basis: str = '60', start: str = "", end: str = "") -> List[
+        Dict[str, any]]:
         """Retrieve OHLC ticker data for a symbol.
 
         Args:
             symbol: Trading pair (e.g., BTC-USD).
-            time_basis: Candlestick interval in seconds.
-            limit: Number of recent entries to return.
+            time_basis: Candlestick interval in seconds (e.g., '60' for 1 minute).
+            start: Start date in MM-DD-YYYY format.
+            end: End date in MM-DD-YYYY format.
 
         Returns:
             List of formatted OHLC data or None on error.
@@ -134,27 +136,48 @@ class Coinbase:
         if int(time_basis) not in self.VALID_INTERVALS:
             logger.error(f"Invalid time_basis {time_basis}. Valid intervals: {self.VALID_INTERVALS}")
             return None
-        _MAX_CALL = 300
-        data = []
-        try:
-            start = datetime.strptime(start, '%m-%d-%Y')
-            end = datetime.strptime(end, '%m-%d-%Y')
-            diff = end - start
-            for i in range(0, diff.days, _MAX_CALL):
-                start_temp = start + timedelta(days=i)
-                end_temp = start + timedelta(days=i + _MAX_CALL)
-                if end_temp>end:
-                    end_temp = end
-                candles = self.api.get_candles(symbol, granularity="ONE_DAY", start=int(start_temp.timestamp()), end=int(end_temp.timestamp()))
-                if not candles['candles']:
-                    raise Exception("No candle data returned")
-                formatted_data = self._format_ticker_data(candles['candles'])
-                data.append(formatted_data)
-            r = []
-            for i in range(0, len(data)):
-                r += data[i]
 
-            return r
+        # Max candles per API call (API limit)
+        _MAX_CANDLES = 350
+        # Calculate max seconds per call for the given time_basis
+        max_seconds_per_call = _MAX_CANDLES * int(time_basis)
+
+        data = []
+
+        try:
+            start_dt = datetime.strptime(start, '%m-%d-%Y')
+            end_dt = datetime.strptime(end, '%m-%d-%Y')
+
+            # Convert time_basis to API granularity (e.g., 60 seconds = ONE_MINUTE)
+            granularity = "ONE_MINUTE" if time_basis == "60" else f"{int(time_basis)}_SECONDS"
+
+            # Current timestamp for iteration
+            current_start = start_dt
+
+            while current_start < end_dt:
+                # Calculate end time for this chunk (max 350 candles)
+                end_temp = min(current_start + timedelta(seconds=max_seconds_per_call), end_dt)
+
+                candles = self.api.get_candles(
+                    symbol,
+                    granularity=granularity,
+                    start=int(current_start.timestamp()),
+                    end=int(end_temp.timestamp())
+                )
+
+                if not candles['candles']:
+                    logger.warning(f"No candle data returned for {symbol} from {current_start} to {end_temp}")
+                else:
+                    formatted_data = self._format_ticker_data(candles['candles'])
+                    data.append(formatted_data)
+
+                # Move to the next chunk (add 1 second to avoid overlap)
+                current_start = end_temp + timedelta(seconds=1)
+
+            # Flatten the list of lists into a single list
+            result = [item for sublist in data for item in sublist]
+            return result
+
         except Exception as e:
             logger.error(f"Error retrieving ticker data for {symbol}: {e}")
             return None

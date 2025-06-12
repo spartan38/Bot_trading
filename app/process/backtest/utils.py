@@ -4,14 +4,14 @@ from app.common.exchange.coinbase import coinbase
 from common.exchange.exchange import Exchange
 
 # Function to calculate technical indicators
-def calculate_technical_indicators(ticker, source="coinbase"):
+def calculate_technical_indicators(ticker, source="coinbase", start=2020, end="2025", granularity="one_day"):
     """
     Add 10 technical analysis features to the DataFrame.
     Assumes df has columns: open_price, high_price, low_price, close_price, volume.
     """
     try:
         print(f"Adding feature to {ticker} from {source}")
-        df = pd.read_csv(f"./process/backtest/histo/{ticker}_2020_2025_{source}.csv")
+        df = pd.read_csv(f"./process/backtest/histo/{ticker}_{start}_{end}_{source}_{granularity}.csv")
         # Ensure the DataFrame is sorted by timestamp
         df = df.sort_index()
 
@@ -57,20 +57,20 @@ def calculate_technical_indicators(ticker, source="coinbase"):
         # 10. OBV
         df['OBV'] = (df['volume'] * ((df['close_price'] > df['close_price'].shift()).astype(int) * 2 - 1)).cumsum()
 
-        df.to_csv(f"./process/backtest/histo/TA/{ticker}_2020_2025_{source}_feature.csv")
+        df.to_csv(f"./process/backtest/histo/TA/{ticker}_{start}_{end}_{source}_{granularity}_feature.csv")
         print(f"Hisotrized {ticker} with new features")
     except:
         print(f"An error while processing {ticker}")
         
         
 # Function to process a single ticker
-def process_ticker(ticker, exchange: Exchange, source="coinbase"):
+def process_ticker(ticker, exchange: Exchange, source="coinbase",start="01-01-2025", end="02-01-2025", granularity="one_day"):
     try:
         print(f"Starting {ticker}")
-        res = exchange.get_ticker_data(ticker, start="01-01-2020", end="01-01-2025")
+        res = exchange.get_ticker_data(ticker, start=start, end=end)
         df = pd.DataFrame(res)
         df = df.set_index(df["timestamp"]).drop(["timestamp"], axis=1)
-        df.sort_index().to_csv(f"./process/backtest/histo/{ticker}_2020_2025_{source}.csv")
+        df.sort_index().to_csv(f"./process/backtest/histo/{ticker}_{start}_{end}_{source}_{granularity}.csv")
         print(f"{ticker} historized")
     except Exception as e:
         print(f"Issue when historizing {ticker}: {str(e)}")
