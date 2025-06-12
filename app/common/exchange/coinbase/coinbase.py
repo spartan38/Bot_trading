@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 from coinbase.rest import RESTClient
 from datetime import datetime, timedelta
 import logging
@@ -49,40 +49,33 @@ class Coinbase:
             if all_details:
                 return {"all": balances}
             if flag_portfolio:
-                portfolio = [{"asset": asset, "amount": amount} for asset, amount in balances]
-                all_pairs = [x["asset"] for x in portfolio]
+                portfolio = [{"asset": k, k:v} for k, v in balances.items()]
+                all_pairs = [k for k, _ in balances.items()]
                 return {"portfolio": portfolio, "assets": all_pairs}
             raise Exception("Please select an option (e.g., all_details or flag_portfolio)")
         except Exception as e:
             logger.error(f"Error retrieving account details: {e}")
             raise
 
-    def get_spot_pair(self, first_pair: str = "BTC", second_pair: str = "USD", interval: str = "60") -> float:
-        """Get the latest spot price for a trading pair.
+    def get_spot_pair(self, first_pair: str = "BTC", second_pair: str = "USD") -> Optional[float]:
+        """
+        Get the latest spot price for a trading pair using Coinbase Pro API.
 
         Args:
-            first_pair: Base asset (e.g., BTC).
-            second_pair: Quote asset (e.g., USD).
-            interval: Candlestick interval in seconds (e.g., 60 for 1 minute).
+            first_pair: Base asset (e.g., 'BTC').
+            second_pair: Quote asset (e.g., 'USD').
 
         Returns:
-            Latest closing price or 0.0 on error.
+            Latest spot price as a float, or None on error.
         """
-        if first_pair == "USDT" and second_pair == "USD":
-            return 1.0
-        if int(interval) not in self.VALID_INTERVALS:
-            logger.error(f"Invalid interval {interval}. Valid intervals: {self.VALID_INTERVALS}")
-            return 0.0
-
         symbol = f"{first_pair}-{second_pair}"
         try:
-            candles = self.api.get_candles(symbol, granularity=int(interval))
-            if not candles.get('candles'):
-                raise Exception("No candle data returned")
-            return float(candles['candles'][-1]['close'])  # Latest close price
+            # Use Coinbase Pro API's /products/<product-id>/ticker endpoint
+            ticker = self.api.get_product(product_id=symbol)
+            return float(ticker['price'])
         except Exception as e:
-            logger.error(f"Error getting data for symbol {symbol}: {e}")
-            return 0.0
+            logger.error(f"Error getting spot price for {symbol}: {e}")
+            return None
 
     def execute_order(self, quantity: float, pair: str, buy: bool, order_type: str = "market") -> Dict[str, any]:
         """Execute a buy or sell order on Coinbase.
