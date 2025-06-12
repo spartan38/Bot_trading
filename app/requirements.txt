@@ -4,4 +4,6 @@ fastapi==0.109.2
 uvicorn[standard]
 krakenex
 pymongo
-talib
+coinbase-advanced-py
+scikit-learn==1.6.1
+matplotlib==3.10.3

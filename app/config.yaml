@@ -8,5 +8,6 @@ MONGODB_URI:
 EXCHANGE: 
   - binance
   - kraken
+  - coinbase
 API_HOST: localhost
-API_PORT: 8081
+API_PORT: 8081 
